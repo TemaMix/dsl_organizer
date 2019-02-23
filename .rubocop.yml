@@ -1,0 +1,7 @@
+Metrics/BlockLength:
+  Exclude:
+    - 'dsl_organizer.gemspec'
+    - 'spec/**/*'
+Metrics/MethodLength:
+  Exclude:
+    - 'lib/dsl_organizer/core.rb'
