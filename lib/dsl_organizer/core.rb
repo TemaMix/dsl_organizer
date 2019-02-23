@@ -1,9 +1,7 @@
+require 'byebug'
 module DslOrganizer
   # Load methods for control dsl commands.
   module Core
-    class DslCommandsNotFound < StandardError
-    end
-
     # @syntax
     #   commands: { <command>:<class executor> }
     # @example
@@ -12,12 +10,12 @@ module DslOrganizer
     # rubocop:disable Metrics/AbcSize
     def dictionary(commands: [])
       if commands.nil? || commands.empty?
-        raise DslCommandsNotFound, 'Add DSL commands for work'
+        raise Errors::DslCommandsNotFound, 'Add DSL commands for work'
       end
 
       commands.each do |command|
         unless ExportContainer.real_container.key?(command)
-          raise DslCommandsNotFound, 'Add DSL commands for work'
+          raise Errors::DslCommandsNotFound, 'Add DSL commands for work'
         end
       end
 

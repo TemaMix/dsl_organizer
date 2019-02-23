@@ -1,43 +1,61 @@
 # DslOrganizer
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/dsl_organizer`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+DslOrganizer provides a simple way to create self dsl and allows to integrate dsl to logic.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Installation is pretty standard:
 
-```ruby
-gem 'dsl_organizer'
+```
+$ gem install dsl_organizer
+```
+
+If you use bundler to add it to your Gemfile:
+```
+gem 'dsl_organizer', '~> 1.0'
 ```
 
 And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install dsl_organizer
 
 ## Usage
+### Brief Example
+1. Firstly, you should think up commands for your dsl.
+```ruby
+class Configuration
+ include DslOrganizer.dictionary(
+   commands: 
+     {
+       color: ColorExecutor,
+       background: BackroundExecutor
+     }
+  )
+end
+```
+2. Secondly, you should define executors for your commands and export them.
+```ruby
+class ColorExecutor
+  include DslOrganizer::ExportCommand[:color]
+end
 
-TODO: Write usage instructions here
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+class BackroundExecutor
+  include DslOrganizer::ExportCommand[:background]
+end
+```
+3. Finally, you can use commands something like that:
+ ```ruby
+Configuration.run do 
+  color 
+  background 
+end
+ ```
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/dsl_organizer. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/temamix/dsl_organizer. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-## Code of Conduct
-
-Everyone interacting in the DslOrganizer project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/dsl_organizer/blob/master/CODE_OF_CONDUCT.md).

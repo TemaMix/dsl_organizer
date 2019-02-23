@@ -1,8 +1,12 @@
 require 'spec_helper'
 
-describe DslOrganizer do
+RSpec.describe DslOrganizer do
   it 'has a version number' do
     expect(DslOrganizer::VERSION).not_to be nil
+  end
+
+  after :each do
+    DslOrganizer::ExportContainer.reset
   end
 
   context 'success integration' do
@@ -25,6 +29,8 @@ describe DslOrganizer do
       dummy_class.run do
         after 'enabled'
       end
+
+      Object.send(:remove_const, :AfterHook)
     end
   end
 
@@ -32,14 +38,14 @@ describe DslOrganizer do
     it 'adds to class a dsl without commands' do
       expect do
         Class.new { include DslOrganizer.dictionary }
-      end.to raise_error(DslOrganizer::Core::DslCommandsNotFound,
+      end.to raise_error(DslOrganizer::Errors::DslCommandsNotFound,
                          'Add DSL commands for work')
     end
 
     it 'adds to class a dsl without commands to commands container' do
       expect do
         Class.new { include DslOrganizer.dictionary(commands: [:after]) }
-      end.to raise_error(DslOrganizer::Core::DslCommandsNotFound,
+      end.to raise_error(DslOrganizer::Errors::DslCommandsNotFound,
                          'Add DSL commands for work')
     end
   end

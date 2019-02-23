@@ -1,3 +1,4 @@
+require_relative 'dsl_organizer/errors'
 require_relative 'dsl_organizer/container'
 require_relative 'dsl_organizer/command_container'
 require_relative 'dsl_organizer/export_container'

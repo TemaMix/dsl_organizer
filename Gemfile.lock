@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    dsl_organizer (0.1.0)
+    dsl_organizer (1.0.0)
       dry-auto_inject (~> 0.6.0)
       dry-container (~> 0.7.0)
 
