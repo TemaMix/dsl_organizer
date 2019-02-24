@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = 'DSL organizer allows to add flexible' \
                        ' and readable dsl handlers to your project.'
-  spec.homepage      = 'http://github.com/temamix/dsl_organizer'
+  spec.homepage      = 'http://github.com/TemaMix/dsl_organizer'
   spec.license       = 'MIT'
 
   # Prevent pushing this gem to RubyGems.org.
@@ -41,7 +41,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'dry-auto_inject', '~> 0.6.0'
   spec.add_dependency 'dry-container', '~> 0.7.0'
 
-  spec.add_development_dependency 'bundler', '~> 2.0'
+  spec.add_development_dependency 'bundler', '~> 1.17.2', '>= 1.17.2'
   spec.add_development_dependency 'pry-byebug', '~> 3.6.0'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
