@@ -17,18 +17,4 @@ RSpec.configure do |config|
   # end of the spec run, to help surface which specs are running
   # particularly slow.
   config.profile_examples = 3
-
-  config.around(:example, remove_const: true) do |example|
-    const_before = Object.constants
-
-    # DslOrganizer::ExportContainer.remove_class_variable(:@@real_container)
-    # DslOrganizer::CommandContainer.remove_class_variable(:@@real_container)
-
-    example.run
-
-    const_after = Object.constants
-    (const_after - const_before).each do |const|
-      Object.send(:remove_const, const)
-    end
-  end
 end

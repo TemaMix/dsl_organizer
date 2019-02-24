@@ -11,8 +11,8 @@ RSpec.describe DslOrganizer do
 
   context 'success integration' do
     it 'is executed dsl for dummy class' do
-      AfterHook = Struct.new(:status) do
-        def call
+      AfterHook = Class.new do
+        def call(status)
           "Current status #{status}"
         end
       end
@@ -23,8 +23,7 @@ RSpec.describe DslOrganizer do
         include DslOrganizer.dictionary(commands: [:after])
       end
 
-      expect_any_instance_of(AfterHook)
-        .to receive(:call).and_return('Current status enabled')
+      expect_any_instance_of(AfterHook).to receive(:call)
 
       dummy_class.run do
         after 'enabled'

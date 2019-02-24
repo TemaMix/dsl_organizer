@@ -1,4 +1,3 @@
-require 'byebug'
 module DslOrganizer
   # Load methods for control dsl commands.
   module Core
@@ -7,8 +6,21 @@ module DslOrganizer
     # @example
     #   commands: { after: AfterHook, before: BeforeHook }
     # @return [Module]
-    # rubocop:disable Metrics/AbcSize
     def dictionary(commands: [])
+      validate_commands(commands: commands)
+
+      dsl_operator = new_dsl_operator(commands: commands)
+      dsl_module = new_dsl_module(dsl_operator: dsl_operator)
+      Module.new do
+        singleton_class.send :define_method, :included do |host_class|
+          host_class.extend dsl_module
+        end
+      end
+    end
+
+    private
+
+    def validate_commands(commands:)
       if commands.nil? || commands.empty?
         raise Errors::DslCommandsNotFound, 'Add DSL commands for work'
       end
@@ -18,38 +30,41 @@ module DslOrganizer
           raise Errors::DslCommandsNotFound, 'Add DSL commands for work'
         end
       end
+    end
 
-      command_class = Class.new do
-        commands.each do |command|
-          define_method command do |values = [], &block|
-            command_instance = ExportContainer[command].new(*values, &block)
-
-            execute_immediately = command_instance.respond_to? :call
-            CommandContainer[command] = command_instance
-
-            command_instance.call(*values, &block) if execute_immediately
-          end
-        end
-      end
-
-      class_methods = Module.new do
-        attr_reader :target_url
-
+    def new_dsl_module(dsl_operator:)
+      Module.new do
         define_method :used_dsl do
-          @used_dsl ||= command_class.new
+          @used_dsl ||= dsl_operator.new
         end
 
         def run(&block)
           used_dsl.instance_eval(&block)
         end
       end
+    end
 
-      Module.new do
-        singleton_class.send :define_method, :included do |host_class|
-          host_class.extend class_methods
+    def new_dsl_operator(commands:)
+      Class.new do
+        commands.each do |command|
+          define_method command do |values = [], &block|
+            execute_immediately = ExportContainer[command].method_defined? :call
+
+            command_instance = if execute_immediately
+                                 CommandContainer[command] ||
+                                   ExportContainer[command].new
+                               else
+                                 ExportContainer[command].new(*values, &block)
+                               end
+
+            unless CommandContainer[command]
+              CommandContainer[command] = command_instance
+            end
+
+            command_instance.call(*values, &block) if execute_immediately
+          end
         end
       end
     end
-    # rubocop:enable Metrics/AbcSize
   end
 end
