@@ -28,7 +28,7 @@ class Configuration
  include DslOrganizer.dictionary(
    commands: 
      {
-       color: ColorExecutor,
+       font_color: FontColorExecutor,
        background: BackroundExecutor
      }
   )
@@ -36,21 +36,30 @@ end
 ```
 2. Secondly, you should define executors for your commands and export them.
 ```ruby
-class ColorExecutor
+class FontColorExecutor
   include DslOrganizer::ExportCommand[:color]
+  
+  def call(font_color)
+    puts font_color
+  end
 end
 
 class BackroundExecutor
   include DslOrganizer::ExportCommand[:background]
+  
+  def call(backround_color)
+    puts backround_color
+  end
 end
 ```
 3. Finally, you can use commands something like that:
  ```ruby
 Configuration.run do 
-  color 
-  background 
+  color '#AAA'
+  background '#CCC'
 end
  ```
+ The dsl commands `color` and `background` will executed immediately.
 
 ## Contributing
 
