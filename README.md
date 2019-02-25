@@ -26,11 +26,7 @@ And then execute:
 ```ruby
 class Configuration
  include DslOrganizer.dictionary(
-   commands: 
-     {
-       font_color: FontColorExecutor,
-       background: BackroundExecutor
-     }
+   commands: [:font_color, :background]
   )
 end
 ```
