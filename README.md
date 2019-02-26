@@ -1,6 +1,6 @@
 # DslOrganizer
 
-DslOrganizer provides a simple way to create self dsl and allows to integrate dsl to logic.
+DslOrganizer provides a simple way to create self dsl and allows to integrate dsl to logic easy.
 
 ## Installation
 
@@ -24,7 +24,7 @@ And then execute:
 ### Brief Example
 1. Firstly, you should think up commands for your dsl.
 ```ruby
-class Configuration
+module Configuration
  include DslOrganizer.dictionary(
    commands: [:font_color, :background]
   )
@@ -33,29 +33,50 @@ end
 2. Secondly, you should define executors for your commands and export them.
 ```ruby
 class FontColorExecutor
-  include DslOrganizer::ExportCommand[:color]
+  include DslOrganizer::ExportCommand[:font_colors]
   
   def call(font_color)
-    puts font_color
+     colors << font_color
+  end
+  
+  def colors
+     @colors ||=[]
   end
 end
 
 class BackroundExecutor
-  include DslOrganizer::ExportCommand[:background]
+  include DslOrganizer::ExportCommand[:backgrounds]
   
   def call(backround_color)
-    puts backround_color
+     colors << backround_colo
+  end
+  
+  def colors
+     @colors ||=[]
   end
 end
 ```
-3. Finally, you can use commands something like that:
+3. Thirdly, described logic with using dsl commands can look something like that: 
  ```ruby
 Configuration.run do 
   color '#AAA'
+  color '#BBB'
   background '#CCC'
 end
  ```
  The dsl commands `color` and `background` will executed immediately.
+
+4. Finally, you can integrate commands to basic logic to use for it the Dependency Injection pattern:
+ ```ruby
+class ColorMixer
+  def print_all_colors
+    DslOrganizer::CommandContainer[:font_colors].map do |font_color|
+      puts font_color
+    end
+  end
+end
+ ```
+ 
 
 ## Contributing
 
