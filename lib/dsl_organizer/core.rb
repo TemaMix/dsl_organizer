@@ -7,6 +7,8 @@ module DslOrganizer
     #   commands: { after: AfterHook, before: BeforeHook }
     # @return [Module]
     def dictionary(commands: [])
+      CommandContainer.reset
+
       @dsl_commands = commands
       validate_commands
 
@@ -46,7 +48,7 @@ module DslOrganizer
           @dsl_commands ||= commands
         end
 
-        def dsl_container
+        define_method :dsl_container do
           CommandContainer
         end
 

@@ -44,10 +44,10 @@ RSpec.describe DslOrganizer do
       end
 
       dummy_class.run do
-        after('test')
+        after('enabled')
       end
 
-      expect(dummy_class.dsl_container[:after].class).to eq(AfterHook)
+      expect(dummy_class.dsl_container[:after].class.name).to eq('AfterHook')
 
       Object.send(:remove_const, :AfterHook)
     end
@@ -56,8 +56,10 @@ RSpec.describe DslOrganizer do
   context 'success integration' do
     it 'is executed dsl for dummy class' do
       AfterHook = Class.new do
+        attr_reader :status
+
         def call(status)
-          "Current status #{status}"
+          @status = "Current status #{status}"
         end
       end
 
@@ -67,12 +69,13 @@ RSpec.describe DslOrganizer do
         include DslOrganizer.dictionary(commands: [:after])
       end
 
-      expect_any_instance_of(AfterHook).to receive(:call)
-
       dummy_class.run do
         after 'enabled'
       end
 
+      expect(
+        dummy_class.dsl_container[:after].status
+      ).to eq('Current status enabled')
       Object.send(:remove_const, :AfterHook)
     end
   end

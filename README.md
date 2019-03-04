@@ -1,4 +1,4 @@
-# DslOrganizer
+# DslOrganizer ![Build Status](https://travis-ci.org/TemaMix/dsl_organizer.svg) [![Code Climate](https://codeclimate.com/github/TemaMix/dsl_organizer.svg)](https://codeclimate.com/github/TemaMix/dsl_organizer) 
 
 DslOrganizer provides a simple way to create self dsl and allows to integrate dsl to logic easy.
 
