@@ -8,7 +8,6 @@
 #   `execute some process`
 #   `execute after something happen`
 
-
 require 'dsl_organizer'
 
 class AfterHook
@@ -59,7 +58,7 @@ end
 
 module Process
   include DslOrganizer.dictionary(
-      commands: %i[before after]
+    commands: %i[before after]
   )
 
   include HooksOperator

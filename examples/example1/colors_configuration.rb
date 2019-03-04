@@ -8,7 +8,6 @@
 #   `execute some process`
 #   `execute after something happen`
 
-
 require 'dsl_organizer'
 
 class FontColorExecutor
@@ -37,7 +36,7 @@ end
 
 module Configuration
   include DslOrganizer.dictionary(
-      commands: %i[font_colors backgrounds]
+    commands: %i[font_colors backgrounds]
   )
 end
 
