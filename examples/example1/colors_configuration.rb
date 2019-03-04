@@ -49,10 +49,11 @@ end
 
 module Configuration
   def self.print_all_colors
-    DslOrganizer::CommandContainer[:font_colors].colors.map do |color|
+    dsl_container[:font_colors].colors.map do |color|
       puts color
     end
-    DslOrganizer::CommandContainer[:backgrounds].colors.map do |color|
+
+    dsl_container[:backgrounds].colors.map do |color|
       puts color
     end
   end

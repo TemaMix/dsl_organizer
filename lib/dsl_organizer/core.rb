@@ -46,8 +46,8 @@ module DslOrganizer
           @dsl_commands ||= commands
         end
 
-        def container
-          DslOrganizer::CommandContainer
+        def dsl_container
+          CommandContainer
         end
 
         def run(&block)

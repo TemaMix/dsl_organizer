@@ -44,20 +44,12 @@ module HooksOperator
 
   module ClassMethods
     def with_hooks
-      run_before_hooks
+      run_hooks(dsl_container[:before].hooks)
       yield
-      run_after_hooks
+      run_hooks(dsl_container[:after].hooks)
     end
 
     private
-
-    def run_before_hooks
-      run_hooks(container[:before].hooks)
-    end
-
-    def run_after_hooks
-      run_hooks(container[:after].hooks)
-    end
 
     def run_hooks(hooks)
       hooks.each { |hook| instance_exec(&hook) }

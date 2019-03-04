@@ -70,10 +70,11 @@ end
  ```ruby
 module Configuration
   def self.print_all_colors
-    container[:font_colors].colors.map do |color|
+    dsl_container[:font_colors].colors.map do |color|
       puts color
     end
-    container[:backgrounds].colors.map do |color|
+    
+    dsl_container[:backgrounds].colors.map do |color|
       puts color
     end
   end

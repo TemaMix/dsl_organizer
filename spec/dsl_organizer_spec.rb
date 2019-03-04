@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+require 'byebug'
 RSpec.describe DslOrganizer do
   it 'has a version number' do
     expect(DslOrganizer::VERSION).not_to be nil
@@ -24,6 +24,30 @@ RSpec.describe DslOrganizer do
       end
 
       expect(dummy_class.dsl_commands).to eq([:after])
+
+      Object.send(:remove_const, :AfterHook)
+    end
+  end
+
+  describe '#dsl_container' do
+    it 'returns available dsl command container' do
+      AfterHook = Class.new do
+        include DslOrganizer::ExportCommand[:after]
+
+        def call(status)
+          "Current status #{status}"
+        end
+      end
+
+      dummy_class = Class.new do
+        include DslOrganizer.dictionary(commands: [:after])
+      end
+
+      dummy_class.run do
+        after('test')
+      end
+
+      expect(dummy_class.dsl_container[:after].class).to eq(AfterHook)
 
       Object.send(:remove_const, :AfterHook)
     end
