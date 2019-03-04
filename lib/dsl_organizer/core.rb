@@ -10,8 +10,7 @@ module DslOrganizer
       @dsl_commands = commands
       validate_commands
 
-      dsl_operator = new_dsl_operator
-      dsl_module = new_dsl_module(dsl_operator: dsl_operator)
+      dsl_module = new_dsl_module(dsl_operator: new_dsl_operator)
       Module.new do
         singleton_class.send :define_method, :included do |host_class|
           host_class.extend dsl_module
