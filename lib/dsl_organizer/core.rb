@@ -46,6 +46,10 @@ module DslOrganizer
           @dsl_commands ||= commands
         end
 
+        def container
+          DslOrganizer::CommandContainer
+        end
+
         def run(&block)
           used_dsl.instance_eval(&block)
         end

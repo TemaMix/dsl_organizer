@@ -26,7 +26,7 @@ And then execute:
 ```ruby
 module Configuration
  include DslOrganizer.dictionary(
-   commands: [:font_color, :background]
+   commands: [:font_colors, :backgrounds]
   )
 end
 ```
@@ -40,7 +40,7 @@ class FontColorExecutor
   end
   
   def colors
-     @colors ||=[]
+     @colors ||= []
   end
 end
 
@@ -48,36 +48,38 @@ class BackroundExecutor
   include DslOrganizer::ExportCommand[:backgrounds]
   
   def call(backround_color)
-     colors << backround_colo
+     colors << backround_color
   end
   
   def colors
-     @colors ||=[]
+     @colors ||= []
   end
 end
 ```
 3. Thirdly, described logic with using dsl commands can look something like that: 
  ```ruby
-Configuration.run do 
-  color '#AAA'
-  color '#BBB'
-  background '#CCC'
+Configuration.run do
+  font_colors'#AAA'
+  font_colors '#BBB'
+  backgrounds '#CCC'
 end
  ```
  The dsl commands `color` and `background` will executed immediately.
 
 4. Finally, you can integrate commands to basic logic to use for it the Dependency Injection pattern:
  ```ruby
-class ColorMixer
-  def print_all_colors
-    DslOrganizer::CommandContainer[:font_colors].map do |font_color|
-      puts font_color
+module Configuration
+  def self.print_all_colors
+    container[:font_colors].colors.map do |color|
+      puts color
+    end
+    container[:backgrounds].colors.map do |color|
+      puts color
     end
   end
 end
  ```
  
-
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/temamix/dsl_organizer. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
